@@ -61,15 +61,10 @@ public class Simulation {
             walkers.forEach(w -> w.move());
         }
         
-        Map<Node, Integer> node2numWalker = walkersAtNode(ba, walkers);
-        String filename = "RandomWalk-txt";
-        try (BufferedWriter out = FileIO.openWriter(filename)) {
-            for (Node node : node2numWalker.keySet()) {
-                int n = node2numWalker.get(node);
-                int k = ba.neighbours(node).size();
-                FileIO.writeSSV(out, k, n);
-            }
-        }
+
+    
+    
+    
     }
 
 }
