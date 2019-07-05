@@ -1,5 +1,6 @@
 package randomWalk;
 
+import java.awt.Point;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -8,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import myLib.utils.FileIO;
+import myLib.utils.Utils;
 import networkModels.BA;
 import network.*;
 
@@ -40,6 +42,24 @@ public class Simulation {
     }
 
     /**
+     * 各頂点上のwalker数(node2numWalker)を頂点の次数に対するwalker数へ変換
+     *
+     * @param network
+     * @param node2numWalker
+     * @return
+     */
+    public static List<Point> degreeVSNumWalkers(AbstractNetwork network,
+            Map<Node, Integer> node2numWalker) {
+        List<Point> list = Utils.createList();//(次数,walker数)のリスト
+        for (Node node : node2numWalker.keySet()) {
+            int n = node2numWalker.get(node);
+            int k = network.neighbours(node).size();
+            list.add(new Point(k, n));
+        }
+        return list;
+    }
+
+    /**
      * @param args the command line arguments
      * @throws java.io.IOException
      */
@@ -56,15 +76,20 @@ public class Simulation {
             Walker walker = new Walker(ba);
             walkers.add(walker);
         }
-        
+
         for (int t = 0; t < tmax; t++) {
             walkers.forEach(w -> w.move());
         }
-        
 
-    
-    
-    
+        Map<Node, Integer> node2numWalker = walkersAtNode(ba, walkers);
+        List<Point> plist = degreeVSNumWalkers(ba, node2numWalker);
+
+        String filename = "RandomWalk-txt";
+        try (BufferedWriter out = FileIO.openWriter(filename)) {
+            for (Point p : plist) {
+                FileIO.writeSSV(out, p.x, p.y);
+            }
+        }
     }
 
 }
