@@ -51,11 +51,11 @@ public class Simulation {
     public static List<Point> degreeVSNumWalkers(AbstractNetwork network,
             Map<Node, Integer> node2numWalker) {
         List<Point> list = Utils.createList();//(次数,walker数)のリスト
-        for (Node node : node2numWalker.keySet()) {
-            int n = node2numWalker.get(node);
-            int k = network.neighbours(node).size();
-            list.add(new Point(k, n));
-        }
+
+
+
+
+
         return list;
     }
 
